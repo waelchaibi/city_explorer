@@ -16,11 +16,13 @@ function buildMarkedDates(places, selectedDay) {
   }
 
   if (typeof selectedDay === 'string' && selectedDay) {
+    const wasMarked = marked[selectedDay]?.marked === true;
     marked[selectedDay] = {
       ...(marked[selectedDay] ?? {}),
       selected: true,
       selectedColor: '#2196F3',
       selectedTextColor: '#fff',
+      selectedDotColor: wasMarked ? '#fff' : undefined,
     };
   }
 
@@ -63,6 +65,7 @@ export default function CalendarScreen({ navigation, route }) {
       <Calendar
         onDayPress={onDayPress}
         markedDates={markedDates}
+        markingType="dot"
         theme={{
           todayTextColor: '#1565C0',
           arrowColor: '#1565C0',
