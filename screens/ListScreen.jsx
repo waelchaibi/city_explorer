@@ -27,13 +27,11 @@ const ListScreen = ({ navigation }) => {
 
 
 
-  const handlePressPlace = (placeId) => {
-    navigation.navigate('PlaceDetail', { placeId });
+  const handlePressPlace = (id) => {
+    navigation.navigate('PlaceDetail', { id });
   };
 
-  const handlePressAdd = () => {
-    navigation.navigate('AddPlace');
-  };
+
 
 const filteredPlaces = places.filter((place) => 
   (!dateFilter || place.date?.includes(dateFilter)) &&
@@ -73,19 +71,13 @@ const filteredPlaces = places.filter((place) =>
 
       <FlatList
         data={filteredPlaces}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         renderItem={renderPlaceItem}
         contentContainerStyle={styles.list.listContent}
         ListEmptyComponent={<Text style={styles.list.emptyText}>{emptyText}</Text>}
       />
 
-      <TouchableOpacity
-        style={styles.list.fab}
-        onPress={handlePressAdd}
-        activeOpacity={0.8}
-      >
-        <Text style={styles.list.fabText}>+</Text>
-      </TouchableOpacity>
+
     </View>
   );
 };

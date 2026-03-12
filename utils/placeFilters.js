@@ -4,13 +4,15 @@ export function applyPlaceFilters(places, filters) {
   const category = typeof filters?.category === 'string' && filters.category.trim() ? filters.category.trim() : null;
   const favoritesOnly = !!filters?.favoritesOnly;
   const day = typeof filters?.day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(filters.day) ? filters.day : null;
+  const { getPlaceDayKey } = require('./placeDayKey');
 
   return places.filter((p) => {
     if (!p || typeof p !== 'object') return false;
 
     if (category) {
-      const c = typeof p.category === 'string' ? p.category : '';
-      if (c.toLowerCase() !== category.toLowerCase()) return false;
+      const tags = Array.isArray(p.tags) ? p.tags.filter(Boolean) : [];
+      const ok = tags.some((t) => String(t).toLowerCase().includes(category.toLowerCase()));
+      if (!ok) return false;
     }
 
     if (favoritesOnly) {
@@ -18,11 +20,7 @@ export function applyPlaceFilters(places, filters) {
     }
 
     if (day) {
-      const raw = p.visitedAt ?? p.createdAt ?? p.date;
-      if (!raw) return false;
-      const d = new Date(raw);
-      if (Number.isNaN(d.getTime())) return false;
-      if (d.toISOString().slice(0, 10) !== day) return false;
+      if (getPlaceDayKey(p) !== day) return false;
     }
 
     return true;

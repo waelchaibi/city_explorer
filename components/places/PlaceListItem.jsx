@@ -14,7 +14,9 @@ function PlaceListItemInner({ place, onPress }) {
     return 'Place';
   }, [place?.name]);
 
+  const tagsText = Array.isArray(place?.tags) ? place.tags.filter(Boolean).join(' · ') : '';
   const category = typeof place?.category === 'string' ? place.category.trim() : '';
+  const subtitle = tagsText || category;
   const coords = formatCoords(place);
 
   return (
@@ -26,9 +28,9 @@ function PlaceListItemInner({ place, onPress }) {
         {place?.isFavorite ? <Text style={styles.badge}>Fav</Text> : null}
       </View>
 
-      {!!category && (
+      {!!subtitle && (
         <Text style={styles.category} numberOfLines={1}>
-          {category}
+          {subtitle}
         </Text>
       )}
 
