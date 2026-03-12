@@ -1,21 +1,6 @@
-/**
- * Place Item Component
- * Reusable component for displaying a single place in a list
- * Placeholder implementation - ready for styling and data binding
- */
-
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-/**
- * PlaceItem Component
- * @param {Object} props
- * @param {Object} props.place - Place data object
- * @param {string} props.place.id - Unique place identifier
- * @param {string} props.place.name - Place name
- * @param {string} props.place.image - Image URL or path
- * @param {Function} props.onPress - Callback when item is pressed
- */
 const PlaceItem = ({ place, onPress }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>

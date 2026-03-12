@@ -1,19 +1,6 @@
-/**
- * Calendar Badge Component
- * Reusable component for displaying calendar events or visit indicators
- * Placeholder implementation - ready for calendar integration
- */
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-/**
- * CalendarBadge Component
- * @param {Object} props
- * @param {string} props.date - Date string or Date object
- * @param {number} props.eventCount - Number of events on this date
- * @param {boolean} props.isSelected - Whether this date is selected
- */
 const CalendarBadge = ({ date, eventCount = 0, isSelected = false }) => {
   return (
     <View style={[styles.container, isSelected && styles.selected]}>

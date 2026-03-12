@@ -1,20 +1,6 @@
-/**
- * Stats Card Component
- * Reusable component for displaying statistics
- * Placeholder implementation - ready for data integration
- */
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-/**
- * StatsCard Component
- * @param {Object} props
- * @param {string} props.title - Title of the stat
- * @param {string | number} props.value - Stat value
- * @param {string} props.icon - Icon name (if using icon library)
- * @param {string} props.color - Primary color for the card
- */
 const StatsCard = ({ title = 'Stat Title', value = '0', icon = '📊', color = '#2196F3' }) => {
   return (
     <View style={[styles.container, { borderLeftColor: color }]}>
