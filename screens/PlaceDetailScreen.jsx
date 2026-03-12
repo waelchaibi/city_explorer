@@ -1,40 +1,66 @@
-/**
- * Place Detail Screen
- * Displays detailed information about a selected place
- * Placeholder implementation - ready for navigation integration
- */
+import { useEffect, useState } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { styles } from '../styles/styles';
+import { deletePlace, getPlaceById } from '../services/placesService';
 
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+const PlaceDetailScreen = ({ route ,navigation }) => {
+  const { placeId } = route.params;
+  const [place, setPlace] = useState(null);
 
-const PlaceDetailScreen = ({ route }) => {
-  // TODO: Extract place ID from route.params
-  // const { placeId } = route.params;
+  useEffect(() => {
+    const load = async () => {
+      const found = await getPlaceById(placeId);
+      setPlace(found);
+    };
+    load();
+  }, [placeId]);
+
+
+
+  if (!place) {
+    return (
+      <View style={styles.placeDetail.center}>
+        <Text style={styles.placeDetail.errorText}>Lieu introuvable.</Text>
+      </View>
+    );
+  }
+
+  const handleDelete = async () => {
+  await deletePlace(placeId);
+  navigation.navigate('List');
+    };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Place Detail Screen Placeholder</Text>
-      <Text style={styles.subtitle}>Detailed place information coming soon...</Text>
+    <View style={styles.placeDetail.root}>
+      <Image
+        source={
+          place.imageUri
+            ? { uri: place.imageUri }
+            : require('../assets/placeholder.png')
+        }
+        style={styles.placeDetail.image}
+      />
+      <View style={styles.placeDetail.contentContainer}>
+        <Text style={styles.placeDetail.title}>{place.name}</Text>
+        <Text style={styles.placeDetail.date}>{place.date}</Text>
+        {place.tags && (
+          <Text style={styles.placeDetail.tags}>
+            {place.tags.join(' · ')}
+          </Text>
+        )}
+        <Text style={styles.placeDetail.description}>
+          {place.description}
+        </Text>
+      </View>
+            <TouchableOpacity
+              style={styles.list.fab}
+              onPress={handleDelete}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.list.fabText}>-</Text>
+            </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-  },
-});
 
 export default PlaceDetailScreen;

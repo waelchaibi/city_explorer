@@ -1,100 +1,138 @@
-/**
- * Places Service
- * Handles all place-related API calls and data management
- * Placeholder implementation - ready for API integration
- */
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-/**
- * Fetch all places
- * @returns {Promise<Array>} - Array of place objects
- */
+const PLACES_KEY = 'places';
+
+
 export const getPlaces = async () => {
-  // TODO: Replace with actual API call
-  // Example:
-  // const response = await fetch('https://api.example.com/places');
-  // return response.json();
-  
-  return [];
+  try {
+    const json = await AsyncStorage.getItem(PLACES_KEY);
+    if (!json) {
+      return [];
+    }
+    return JSON.parse(json);
+  } catch (error) {
+    console.error('getPlaces error:', error);
+    return [];
+  }
 };
 
-/**
- * Fetch a single place by ID
- * @param {string} placeId - The ID of the place
- * @returns {Promise<Object>} - Place object
- */
+
+const savePlaces = async (places) => {
+  try {
+    const json = JSON.stringify(places);
+    await AsyncStorage.setItem(PLACES_KEY, json);
+  } catch (error) {
+    console.error('savePlaces error:', error);
+  }
+};
+
+
 export const getPlaceById = async (placeId) => {
-  // TODO: Implement API call to fetch single place
-  return {};
+  try {
+    const places = await getPlaces();
+    return places.find((p) => p.id === placeId) || null;
+  } catch (error) {
+    console.error('getPlaceById error:', error);
+    return null;
+  }
 };
 
-/**
- * Add a new place
- * @param {Object} placeData - Place information
- * @returns {Promise<Object>} - Created place object with ID
- */
+
 export const addPlace = async (placeData) => {
-  // TODO: Implement API call to create place
-  // Example payload:
-  // {
-  //   name: string,
-  //   description: string,
-  //   latitude: number,
-  //   longitude: number,
-  //   category: string,
-  //   image: string
-  // }
-  return {};
+  try {
+    const places = await getPlaces();
+
+    const newPlace = {
+      id: Date.now().toString(),
+      ...placeData,
+    };
+
+    const updated = [...places, newPlace];
+    await savePlaces(updated);
+
+    return newPlace;
+  } catch (error) {
+    console.error('addPlace error:', error);
+    throw error;
+  }
 };
 
-/**
- * Update an existing place
- * @param {string} placeId - The ID of the place
- * @param {Object} placeData - Updated place information
- * @returns {Promise<Object>} - Updated place object
- */
+
 export const updatePlace = async (placeId, placeData) => {
-  // TODO: Implement API call to update place
-  return {};
+  try {
+    const places = await getPlaces();
+    const index = places.findIndex((p) => p.id === placeId);
+    if (index === -1) {
+      return null;
+    }
+
+    const updatedPlace = { ...places[index], ...placeData };
+    const updated = [...places];
+    updated[index] = updatedPlace;
+
+    await savePlaces(updated);
+    return updatedPlace;
+  } catch (error) {
+    console.error('updatePlace error:', error);
+    throw error;
+  }
 };
 
-/**
- * Delete a place
- * @param {string} placeId - The ID of the place
- * @returns {Promise<boolean>} - Success status
- */
+
 export const deletePlace = async (placeId) => {
-  // TODO: Implement API call to delete place
-  return false;
+  try {
+    const places = await getPlaces();
+    const updated = places.filter((p) => p.id !== placeId);
+    await savePlaces(updated);
+    return true;
+  } catch (error) {
+    console.error('deletePlace error:', error);
+    return false;
+  }
 };
 
-/**
- * Search places by query
- * @param {string} query - Search query string
- * @returns {Promise<Array>} - Array of matching places
- */
+
 export const searchPlaces = async (query) => {
-  // TODO: Implement API call to search places
-  return [];
+  try {
+    const places = await getPlaces();
+    const q = query.trim().toLowerCase();
+    if (!q) return places;
+
+    return places.filter((p) => {
+      return (
+        p.name?.toLowerCase().includes(q) ||
+        p.description?.toLowerCase().includes(q) ||
+        p.category?.toLowerCase().includes(q)
+      );
+    });
+  } catch (error) {
+    console.error('searchPlaces error:', error);
+    return [];
+  }
 };
 
-/**
- * Get places by category
- * @param {string} category - Category filter
- * @returns {Promise<Array>} - Array of places in category
- */
+
 export const getPlacesByCategory = async (category) => {
-  // TODO: Implement API call to get places by category
-  return [];
+  try {
+    const places = await getPlaces();
+    const c = category.trim().toLowerCase();
+    if (!c) return places;
+    return places.filter(
+      (p) => p.category && p.category.toLowerCase() === c
+    );
+  } catch (error) {
+    console.error('getPlacesByCategory error:', error);
+    return [];
+  }
 };
 
-/**
- * Get places near a location
- * @param {number} latitude - User latitude
- * @param {number} longitude - User longitude
- * @param {number} radiusKm - Search radius in kilometers
- * @returns {Promise<Array>} - Array of nearby places
- */
+
 export const getPlacesNearby = async (latitude, longitude, radiusKm = 5) => {
-  // TODO: Implement API call to get nearby places
-  return [];
+  try {
+    const places = await getPlaces();
+    return places;
+  } catch (error) {
+    console.error('getPlacesNearby error:', error);
+    return [];
+  }
 };

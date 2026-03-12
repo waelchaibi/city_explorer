@@ -9,6 +9,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StackNavigation } from './StackNavigation';
 
 // Import screen components
 import MapScreen from '../screens/MapScreen';
@@ -54,7 +55,7 @@ export default function TabsNavigation() {
       />
       <Tab.Screen
         name="List"
-        component={ListScreen}
+        component={StackNavigation}
         options={{ title: 'Places' }}
       />
       <Tab.Screen
