@@ -1,16 +1,7 @@
-/**
- * Tabs Navigation - Main Navigation Structure
- * Expo SDK 54
- * 
- * This file implements the primary bottom tab navigation for the app.
- * Currently includes 4 main tabs: Map, List, Calendar, and Profile
- */
-
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-// Import screen components
 import MapScreen from '../screens/MapScreen';
 import ListScreen from '../screens/ListScreen';
 import CalendarScreen from '../screens/CalendarScreen';
@@ -18,11 +9,6 @@ import ProfileScreen from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
-/**
- * TabsNavigation Component
- * Sets up the bottom tab navigation with 4 main screens
- * Each tab has an icon and label for easy identification
- */
 export default function TabsNavigation() {
   return (
     <Tab.Navigator

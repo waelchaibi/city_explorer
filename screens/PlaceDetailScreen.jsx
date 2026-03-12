@@ -1,16 +1,7 @@
-/**
- * Place Detail Screen
- * Displays detailed information about a selected place
- * Placeholder implementation - ready for navigation integration
- */
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const PlaceDetailScreen = ({ route }) => {
-  // TODO: Extract place ID from route.params
-  // const { placeId } = route.params;
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Place Detail Screen Placeholder</Text>

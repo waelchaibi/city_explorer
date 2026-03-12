@@ -1,9 +1,3 @@
-/**
- * Calendar Screen
- * Displays calendar with events/visits
- * Placeholder implementation - ready for calendar library integration
- */
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 

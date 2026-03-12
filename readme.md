@@ -45,5 +45,5 @@ Elle permet de **prendre des photos, enregistrer la localisation et la date**, a
 
 1. Cloner le dépôt :  
 ```bash
-git clone <URL_DU_DEPOT>
+git clone 
 cd CityExplorerLite

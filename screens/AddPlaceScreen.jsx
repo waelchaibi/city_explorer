@@ -1,20 +1,7 @@
-/**
- * Add Place Screen
- * Form for adding a new place
- * Placeholder implementation - ready for form integration
- */
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const AddPlaceScreen = ({ navigation }) => {
-  // TODO: Implement form for adding new place
-  // - Place name input
-  // - Location picker
-  // - Description input
-  // - Category selection
-  // - Save/Cancel buttons
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Add Place Screen Placeholder</Text>

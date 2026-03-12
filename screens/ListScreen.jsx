@@ -1,9 +1,3 @@
-/**
- * List Screen
- * Displays a list of places
- * Placeholder implementation - ready for FlatList with real data
- */
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 

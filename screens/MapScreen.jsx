@@ -1,9 +1,3 @@
-/**
- * Map Screen
- * Displays a map view of places
- * Placeholder implementation - ready for real map integration (Google Maps, MapBox, etc.)
- */
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 

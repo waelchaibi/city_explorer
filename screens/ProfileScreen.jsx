@@ -1,9 +1,3 @@
-/**
- * Profile Screen
- * Displays user profile information
- * Placeholder implementation - ready for user data integration
- */
-
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
