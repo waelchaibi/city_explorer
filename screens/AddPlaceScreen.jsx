@@ -1,3 +1,59 @@
+import React, { useState } from 'react';
+import { View, Text, TextInput, ScrollView, TouchableOpacity, Alert, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { styles } from '../styles/styles';
+import { addPlace } from '../services/placesService';
+
+const AddPlaceScreen = ({ navigation }) => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [tags, setTags] = useState('');
+  const [date, setDate] = useState(new Date().toLocaleDateString('fr-FR'));
+  const [imageUri, setImageUri] = useState(null);
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 0.8,
+    });
+
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
+    }
+  };
+
+  const takePhoto = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 0.8,
+    });
+
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
+    }
+  };
+
+  const savePlace = async () => {
+    if (!name.trim()) {
+      Alert.alert('Erreur', 'Le nom est obligatoire');
+      return;
+    }
+
+    const placeData = {
+      name: name.trim(),
+      description: description.trim(),
+      tags: tags.split(',').map(t => t.trim()).filter(t => t),
+      date,
+      imageUri,
+    };
+
+    await addPlace(placeData);
+    Alert.alert('Succès', 'Lieu ajouté !');
+    navigation.goBack();
+  };
 import React, { useMemo, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { PlaceForm } from '../components/places/PlaceForm';
@@ -15,57 +71,29 @@ export default function AddPlaceScreen({ navigation, route }) {
   }, [coordinate?.latitude, coordinate?.longitude]);
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <View style={styles.card}>
-          <PlaceForm
-            initialValue={initialValue}
-            submitLabel={isSaving ? 'Saving…' : 'Save'}
-            onSubmit={async (form) => {
-              if (isSaving) return;
-              setIsSaving(true);
-
-              try {
-                const visitedAt =
-                  typeof form.day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(form.day)
-                    ? `${form.day}T00:00:00.000Z`
-                    : undefined;
-
-                await addPlace({
-                  name: form.name,
-                  description: form.description,
-                  category: form.category,
-                  isFavorite: form.isFavorite,
-                  visitedAt,
-                  latitude: initialValue.latitude,
-                  longitude: initialValue.longitude,
-                });
-
-                navigation.goBack();
-              } catch (e) {
-                Alert.alert('Error', 'Failed to save place.');
-              } finally {
-                setIsSaving(false);
-              }
-            }}
-          />
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <View style={styles.container}>
+      <Text style={styles.title}>Add Place Screen Placeholder</Text>
+      <Text style={styles.subtitle}>Add place form coming soon...</Text>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f6f7f9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
   },
-  content: {
-    padding: 16,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    overflow: 'hidden',
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
   },
 });
+
+export default AddPlaceScreen;

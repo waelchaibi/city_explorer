@@ -1,3 +1,34 @@
+import { useEffect, useState } from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { styles } from '../styles/styles';
+import { deletePlace, getPlaceById } from '../services/placesService';
+
+const PlaceDetailScreen = ({ route ,navigation }) => {
+  const { placeId } = route.params;
+  const [place, setPlace] = useState(null);
+
+  useEffect(() => {
+    const load = async () => {
+      const found = await getPlaceById(placeId);
+      setPlace(found);
+    };
+    load();
+  }, [placeId]);
+
+
+
+  if (!place) {
+    return (
+      <View style={styles.placeDetail.center}>
+        <Text style={styles.placeDetail.errorText}>Lieu introuvable.</Text>
+      </View>
+    );
+  }
+
+  const handleDelete = async () => {
+  await deletePlace(placeId);
+  navigation.navigate('List');
+    };
 import React, { useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { usePlaceById } from '../hooks/usePlaceById';
@@ -34,128 +65,29 @@ export default function PlaceDetailScreen({ navigation, route }) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.card}>
-        <Text style={styles.name}>{title}</Text>
-        {!!place?.category && <Text style={styles.category}>{place.category}</Text>}
-        {!!place?.description && <Text style={styles.description}>{place.description}</Text>}
-
-        <View style={styles.metaRow}>
-          <Text style={styles.metaLabel}>Favorite</Text>
-          <Text style={styles.metaValue}>{place.isFavorite ? 'Yes' : 'No'}</Text>
-        </View>
-
-        <View style={styles.metaRow}>
-          <Text style={styles.metaLabel}>Coordinates</Text>
-          <Text style={styles.metaValue}>
-            {typeof place.latitude === 'number' && typeof place.longitude === 'number'
-              ? `${place.latitude.toFixed(5)}, ${place.longitude.toFixed(5)}`
-              : '—'}
-          </Text>
-        </View>
-      </View>
-
-      <Pressable
-        style={[styles.danger, isDeleting && styles.disabled]}
-        disabled={isDeleting}
-        onPress={() => {
-          if (isDeleting) return;
-          Alert.alert('Delete place', 'Are you sure?', [
-            { text: 'Cancel', style: 'cancel' },
-            {
-              text: 'Delete',
-              style: 'destructive',
-              onPress: async () => {
-                setIsDeleting(true);
-                try {
-                  await deletePlace(place.id);
-                  navigation.goBack();
-                } catch (e) {
-                  Alert.alert('Error', 'Failed to delete place.');
-                } finally {
-                  setIsDeleting(false);
-                }
-              },
-            },
-          ]);
-        }}
-      >
-        <Text style={styles.dangerText}>{isDeleting ? 'Deleting…' : 'Delete'}</Text>
-      </Pressable>
-    </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.title}>Place Detail Screen Placeholder</Text>
+      <Text style={styles.subtitle}>Detailed place information coming soon...</Text>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  center: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
-  muted: {
-    color: '#666',
-    fontSize: 15,
-    fontWeight: '600',
-  },
   container: {
-    padding: 16,
-    backgroundColor: '#f6f7f9',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
   },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-  },
-  name: {
-    fontSize: 22,
-    fontWeight: '900',
-    color: '#111',
-    marginBottom: 6,
-  },
-  category: {
-    fontSize: 13,
-    fontWeight: '800',
-    color: '#1565C0',
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
     marginBottom: 10,
   },
-  description: {
-    fontSize: 15,
-    color: '#333',
-    lineHeight: 21,
-    marginBottom: 14,
-  },
-  metaRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#eee',
-  },
-  metaLabel: {
+  subtitle: {
+    fontSize: 16,
     color: '#666',
-    fontWeight: '700',
-    fontSize: 13,
-  },
-  metaValue: {
-    color: '#111',
-    fontWeight: '800',
-    fontSize: 13,
-  },
-  danger: {
-    marginTop: 12,
-    height: 46,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FF3B30',
-  },
-  dangerText: {
-    color: '#fff',
-    fontWeight: '900',
-    fontSize: 15,
-  },
-  disabled: {
-    opacity: 0.6,
   },
 });
+
+export default PlaceDetailScreen;
