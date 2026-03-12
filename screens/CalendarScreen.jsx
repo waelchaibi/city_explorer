@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import { PlacesFlatList } from '../components/places/PlacesFlatList';
 import { usePlaces } from '../hooks/usePlaces';
 import { getPlaceDayKey } from '../utils/placeDayKey';
 
@@ -49,13 +50,18 @@ export default function CalendarScreen({ navigation, route }) {
     return n;
   }, [places, selectedDay]);
 
+  const filteredPlaces = useMemo(() => {
+    if (!selectedDay) return [];
+    if (!Array.isArray(places)) return [];
+    return places.filter((p) => getPlaceDayKey(p) === selectedDay);
+  }, [places, selectedDay]);
+
   const onDayPress = useCallback(
     (day) => {
       const next = day?.dateString;
       if (typeof next !== 'string' || !next) return;
 
       navigation?.setParams?.({ day: next });
-      navigation.navigate('Map', { day: next });
     },
     [navigation]
   );
@@ -98,6 +104,8 @@ export default function CalendarScreen({ navigation, route }) {
           </Pressable>
         </View>
       </View>
+
+      <PlacesFlatList places={filteredPlaces} onPlacePress={(id) => navigation.navigate('PlaceDetail', { id })} />
     </View>
   );
 }
