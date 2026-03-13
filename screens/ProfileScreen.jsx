@@ -27,9 +27,9 @@ export default function ProfileScreen() {
         <StatTile value={mostActive?.day ? mostActive.day : '—'} label="Jour le plus actif" />
       </View>
 
-      <StatsCard title="Total places" value={String(totalPlaces)} icon="📍" color="#2196F3" />
+      <StatsCard title="places visitées totales" value={String(totalPlaces)} icon="📍" color="#2196F3" />
       <StatsCard
-        title="Most active day"
+        title="le jour le plus actif"
         value={mostActive?.day ? `${mostActive.day} (${mostActive.count})` : '—'}
         icon="📅"
         color="#1565C0"
