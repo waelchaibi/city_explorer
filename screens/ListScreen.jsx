@@ -1,11 +1,12 @@
 
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, TouchableOpacity,
 } from 'react-native';
 import { styles } from '../styles/styles';
 import PlaceItem from '../components/PlaceItem';
 import { getPlaces } from '../services/placesService';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ListScreen = ({ navigation }) => {
   const [places, setPlaces] = useState([]);
@@ -17,13 +18,10 @@ const ListScreen = ({ navigation }) => {
     setPlaces(data);
   };
 
-  useEffect(() => {
-    loadPlaces();
-  }, []);
 
-  useEffect(() => {
-    navigation.addListener('focus', loadPlaces);
-  }, [navigation]);
+  useFocusEffect(() => {
+    loadPlaces();
+  });
 
 
 

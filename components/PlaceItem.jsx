@@ -1,6 +1,5 @@
 import { View, Text, Image,StyleSheet, TouchableOpacity } from 'react-native';
 import { styles } from '../styles/styles';
-import React from 'react';
 
 const PlaceItem = ({ place, onPress }) => {
   return (

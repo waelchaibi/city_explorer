@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import StatsCard from '../components/StatsCard';
 import { ProfileHeader } from '../components/profile/ProfileHeader';
-import { StatTile } from '../components/profile/StatTile';
 import { TopTagsCard } from '../components/profile/TopTagsCard';
 import { usePlaces } from '../hooks/usePlaces';
 import { getMostActiveDay, getTotalPlaces } from '../services/statsService';
@@ -20,16 +19,11 @@ export default function ProfileScreen() {
         title="Mon profil"
         subtitle={`${totalPlaces} lieux - ${tagStats.totalTags} tags`}
       />
+      
 
-      <View style={styles.tilesRow}>
-        <StatTile value={String(totalPlaces)} label="Lieux visités" />
-        <StatTile value={String(tagStats.totalTags)} label="Tags" />
-        <StatTile value={mostActive?.day ? mostActive.day : '—'} label="Jour le plus actif" />
-      </View>
-
-      <StatsCard title="places visitées totales" value={String(totalPlaces)} icon="📍" color="#2196F3" />
+      <StatsCard title="Total places" value={String(totalPlaces)} icon="📍" color="#2196F3" />
       <StatsCard
-        title="le jour le plus actif"
+        title="Most active day"
         value={mostActive?.day ? `${mostActive.day} (${mostActive.count})` : '—'}
         icon="📅"
         color="#1565C0"

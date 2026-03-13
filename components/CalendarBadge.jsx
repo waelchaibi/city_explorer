@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const CalendarBadge = ({ date, eventCount = 0, isSelected = false }) => {

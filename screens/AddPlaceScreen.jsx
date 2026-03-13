@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import { launchImageLibraryAsync, launchCameraAsync , MediaTypeOptions } from 'expo-image-picker';
 import { addPlace } from '../services/placesService';
 
 export default function AddPlaceScreen({ navigation, route }) {
@@ -22,20 +22,18 @@ export default function AddPlaceScreen({ navigation, route }) {
   const [isSaving, setIsSaving] = useState(false);
 
   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    const result = await launchImageLibraryAsync({
+      mediaTypes: MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [16, 9],
-      quality: 0.8,
+      aspect: [1,1]
     });
     if (!result.canceled) setImageUri(result.assets?.[0]?.uri ?? null);
   };
 
   const takePhoto = async () => {
-    const result = await ImagePicker.launchCameraAsync({
+    const result = await launchCameraAsync({
       allowsEditing: true,
-      aspect: [16, 9],
-      quality: 0.8,
+      aspect: [1,1]
     });
     if (!result.canceled) setImageUri(result.assets?.[0]?.uri ?? null);
   };

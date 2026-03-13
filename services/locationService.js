@@ -1,12 +1,12 @@
-import * as Location from 'expo-location';
+import  { requestForegroundPermissionsAsync, getCurrentPositionAsync, Accuracy } from 'expo-location';
 
 export const getCurrentLocation = async () => {
   try {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    const { status } = await requestForegroundPermissionsAsync();
     if (status !== 'granted') return null;
 
-    const position = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
+    const position = await getCurrentPositionAsync({
+      accuracy: Accuracy.Balanced,
     });
 
     const coords = position?.coords;

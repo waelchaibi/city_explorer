@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 const StatsCard = ({ title = 'Stat Title', value = '0', icon = '📊', color = '#2196F3' }) => {
